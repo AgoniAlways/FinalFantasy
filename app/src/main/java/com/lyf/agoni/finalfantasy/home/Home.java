@@ -1,6 +1,7 @@
 package com.lyf.agoni.finalfantasy.home;
 
 import com.lyf.agoni.finalfantasy.bean.BookBean;
+import com.lyf.agoni.finalfantasy.bean.WeatherBean;
 import com.lyf.agoni.library.base.response.BaseResponse;
 import com.lyf.agoni.library.mvp.BaseModel;
 import com.lyf.agoni.library.mvp.BasePresenter;
@@ -16,7 +17,7 @@ public interface Home {
 
         Observable<BaseResponse<BookBean>> getBook(Map<String, Object> params);
 
-        Observable<BaseResponse<BookBean>> getBook(String name, String tag, int start, int count);
+        Observable<BaseResponse<WeatherBean>> getWeather(String city);
 
     }
 
@@ -24,15 +25,15 @@ public interface Home {
 
         void showBook(BookBean bookBean);
 
+        void showWeather(WeatherBean weatherBean);
+
     }
 
     abstract class HomeP extends BasePresenter<HomeM, HomeV> {
 
         public abstract void getBook(String name);
 
-        public abstract void getSearchBook(String name,
-                                           String tag, int start,
-                                           int count);
+        public abstract void getWeather(String city);
 
     }
 

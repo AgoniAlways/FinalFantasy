@@ -1,6 +1,9 @@
 package com.lyf.agoni.finalfantasy.home;
 
+import android.text.TextUtils;
+
 import com.lyf.agoni.finalfantasy.bean.BookBean;
+import com.lyf.agoni.finalfantasy.bean.WeatherBean;
 import com.lyf.agoni.library.base.response.BaseResponse;
 import com.lyf.agoni.library.net.rx.NetWorkCodeException;
 import com.lyf.agoni.library.net.rx.RxObservableListener;
@@ -13,7 +16,7 @@ public class HomeP extends Home.HomeP {
     @Override
     public void getBook(String name) {
 
-        Map<String, Object> params  = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("q", name);
         params.put("tag", "");
         params.put("start", 0);
@@ -34,12 +37,15 @@ public class HomeP extends Home.HomeP {
     }
 
     @Override
-    public void getSearchBook(String name, String tag, int start, int count) {
+    public void getWeather(String city) {
 
-        getRxManager().getInstance().addObserver(mModel.getBook(name, tag, start, count), new RxObservableListener<BaseResponse<BookBean>>(mView) {
+        getRxManager().getInstance().addObserver(mModel.getWeather(city), new RxObservableListener<BaseResponse<WeatherBean>>(mView) {
+
             @Override
-            public void onNext(BaseResponse<BookBean> result) {
-                super.onNext(result);
+            public void onNext(BaseResponse<WeatherBean> result) {
+                if (TextUtils.equals("200", result.code) && result != null) {
+                    mView.showWeather(result.data);
+                }
             }
 
             @Override
@@ -47,6 +53,7 @@ public class HomeP extends Home.HomeP {
                 super.onNetError(e);
             }
         });
+
     }
 
 }
