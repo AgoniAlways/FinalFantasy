@@ -32,6 +32,15 @@ public class BaseActivity<T extends BaseModel, E extends BasePresenter> extends 
         mProgressBar.setTitle("loading...");
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.onDestroy();
+        }
+    }
+
     @Override
     public void onClick(View view) {
 

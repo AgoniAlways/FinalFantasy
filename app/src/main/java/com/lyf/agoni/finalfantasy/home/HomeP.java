@@ -7,6 +7,7 @@ import com.lyf.agoni.finalfantasy.bean.WeatherBean;
 import com.lyf.agoni.library.base.response.BaseResponse;
 import com.lyf.agoni.library.net.rx.NetWorkCodeException;
 import com.lyf.agoni.library.net.rx.RxObservableListener;
+import com.lyf.agoni.library.utils.ToastUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,12 +46,15 @@ public class HomeP extends Home.HomeP {
             public void onNext(BaseResponse<WeatherBean> result) {
                 if (TextUtils.equals("200", result.code) && result != null) {
                     mView.showWeather(result.data);
+                } else {
+                    ToastUtils.showToast(result.msg);
                 }
             }
 
             @Override
             public void onNetError(NetWorkCodeException.ResponseThrowable e) {
                 super.onNetError(e);
+                ToastUtils.showToast(e.message);
             }
         });
 
