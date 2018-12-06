@@ -16,7 +16,7 @@ public class BaseActivity<T extends BaseModel, E extends BasePresenter> extends 
     public E mPresenter;
 
     private ProgressDialog mProgressBar;
-
+    private int mProgressBarCount;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,10 +28,9 @@ public class BaseActivity<T extends BaseModel, E extends BasePresenter> extends 
             mPresenter.setMV(mModel, this);
         }
 
-        mProgressBar = new ProgressDialog(this);
-        mProgressBar.setTitle("loading...");
-    }
+        initProgressDialog();
 
+    }
 
     @Override
     protected void onDestroy() {
@@ -46,16 +45,32 @@ public class BaseActivity<T extends BaseModel, E extends BasePresenter> extends 
 
     }
 
-    public void dismissLoading() {
-        if (mProgressBar != null && mProgressBar.isShowing()) {
-            mProgressBar.dismiss();
+    protected void initProgressDialog() {
+        if (mProgressBar == null) {
+            mProgressBar = new ProgressDialog(this);
+            mProgressBar.setTitle("loading...");
         }
     }
 
+    public void dismissLoading() {
+
+        if (--mProgressBarCount <= 0 && mProgressBar != null && mProgressBar.isShowing()) {
+            mProgressBarCount = 0;
+            mProgressBar.dismiss();
+        }
+
+    }
+
     public void showLoading() {
-        if (mProgressBar != null && !mProgressBar.isShowing()) {
+
+        initProgressDialog();
+
+        if (!mProgressBar.isShowing()) {
             mProgressBar.show();
         }
+
+        mProgressBarCount++;
+
     }
 
 }
