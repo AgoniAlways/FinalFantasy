@@ -1,6 +1,8 @@
 package com.lyf.agoni.library.base;
 
 import android.app.ProgressDialog;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -71,6 +73,18 @@ public class BaseActivity<T extends BaseModel, E extends BasePresenter> extends 
 
         mProgressBarCount++;
 
+    }
+
+    /**
+     * 解决系统字体大小更换导致app字体变化布局混乱
+     **/
+    @Override
+    public Resources getResources() {
+        Resources res = super.getResources();
+        Configuration config = new Configuration();
+        config.setToDefaults();
+        res.updateConfiguration(config, res.getDisplayMetrics());
+        return res;
     }
 
 }
